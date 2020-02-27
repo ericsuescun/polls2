@@ -1,0 +1,56 @@
+extends layout
+
+block content
+	.container
+		.row
+			.col-6.offset-3
+				.row
+					.col-6.justify-content-start
+						a(href='/') &lt Back
+					.col-6.d-flex.justify-content-end.align-items-center
+						button.btn.btn-primary(type='button', data-toggle="modal" data-target="#myModal")
+							i.fa.fa-share-alt(aria-hidden='true')
+
+						a(class="twitter-share-button btn btn-primary ml-2" href="https://twitter.com/intent/tweet?text=Encuesta: " + poll.title + ". Para contestar ingresa a: " + url data-size="small")
+							i.fa.fa-twitter(aria-hidden='true')
+
+						div(class="fb-share-button ml-2" data-href=`${url}` data-layout="button" data-size="large")
+
+						#myModal(class="modal fade")
+							div(class="modal-dialog")
+								div(class="modal-content")
+									div(class="modal-header")
+										h4(class="modal-title") Copy the following URL to share this poll:
+										button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+									
+						      
+									div(class="modal-body")
+										div(class="alert alert-secondary")
+											= url
+				.card.my-3
+					.card-body
+						h4.card-title
+							= poll.title
+						h6.card-subtitle.text-muted
+							= `Created by: ${user.email}`
+						h5.card-subtitle.mt-3
+							= poll.description
+					.card-footer
+						small.card-subtitle.text-muted
+							= `Total votes: ${votes}`
+				.card.my-3
+					.card-body
+						each option in poll.options
+							.mb-3
+								.d-flex.justify-content-start.align-items-center
+									label= `${option.option}:`
+									small(class="text-muted ml-3").mb-2
+										= `${option.votes} votes`
+								.progress
+									if(votes !== 0)
+										div(class="progress-bar" role="progressbar" style=`width: ${100 * option.votes / votes}%;` aria-valuenow=`${100 * option.votes / votes}` aria-valuemin="0" aria-valuemax="100")
+											=`${(100 * option.votes / votes).toFixed(0)}%`
+									else
+										div(class="progress-bar" role="progressbar" style=`width: 0%;` aria-valuenow=0 aria-valuemin="0" aria-valuemax="100")
+											=`0%`
+

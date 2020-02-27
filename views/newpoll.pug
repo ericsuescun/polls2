@@ -1,0 +1,41 @@
+extends layout
+
+block content
+	.continer
+		.row
+			.col-4.offset-4
+				form(action=`/polls/new/${user._id}` method="POST").form-in-line.mt-2
+					.form-group
+						label(for=title) Title
+					
+						input.form-control.mr-sm-2(id="title" type="text" name="title" placeholder="")
+					
+					.form-group
+						label(for=description) Description
+					
+						input.form-control.mr-sm-2(id="description" type="text" name="description" placeholder="")
+
+					.form-group
+						label(for=description) Option 1
+					
+						input.form-control.mr-sm-2(id="opt1" type="text" name="opt1" placeholder="")
+
+					.form-group
+						label(for=description) Option 2
+					
+						input.form-control.mr-sm-2(id="opt2" type="text" name="opt2" placeholder="")
+
+					.form-group
+						label(for=description) Option 3
+					
+						input.form-control.mr-sm-2(id="opt3" type="text" name="opt3" placeholder="")
+
+					.form-group
+						label(for=description) Option 4
+					
+						input.form-control.mr-sm-2(id="opt4" type="text" name="opt4" placeholder="")
+					br
+					br
+					.d-flex.justify-content-between
+						a(href='/' class='btn btn-outline-primary') Cancel
+						button.btn.btn-success(type="submit") Create Poll

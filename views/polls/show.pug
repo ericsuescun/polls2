@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-12
+				if(polls.length > 0)
+					.card-deck
+						each poll in polls
+							.row
+								.col-4
+									.card(style="width: 18rem;" class="mb-3")
+										.card-body
+											a.d-flex.justify-content-end(href=`/polls/destroy/${loggedUser._id}?title=${poll.title}` onClick="return confirm('Are you sure to delete this poll?')")
+												i.fa.fa-trash(aria-hidden='true')
+											h5(class="card-title mb-1")
+												= poll.title
+											small(class="text-muted")
+												= `Creado por: ${loggedUser.email}`
+											p(class="card-text mt-3")
+												= poll.description.split(" ").splice(0,150).join(" ")
+										each b in poll.options
+											- allVotes = allVotes + b.votes
+										.row.no-gutters
+											.col-6
+												button(class="btn btn-outline-secondary btn-sm btn-block" disabled)
+													= `${allVotes} votes`
+											.col-6
+												a(class="btn btn-primary btn-sm btn-block" href=`/polls/vote/results/?id=${loggedUser._id}&title=${poll.title}`) Results
+												
+										- allVotes = 0
+				else
+					h1 There are no polls to show

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+	h1 Poll List for Every One!
+	a(href='/login') Login
+	table.table
+		thead
+			tr
+				th Title
+				th Description
+		tbody
+			each user in users
+				each poll in user.polls
+					tr
+						- if(user.email === u2.email)
+							td
+								a(href=`/polls/destroy/${user._id}?title=${poll.title}`) Delete
+						td= poll.title
+						td= poll.description
+						
+						each b in poll.options
+							td= b.option
+							td= b.votes

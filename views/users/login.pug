@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+	script. 
+	if(error) 
+		.alert.alert-danger.mt-3
+			= error
+	.row
+		.col-4.offset-4
+			form(action="/login" method="POST").form-in-line.mt-2
+				.form-group
+					label(for=email) Email
+				
+					input.form-control.mr-sm-2(id="email" type="text" name="email" placeholder="")
+				
+				.form-group
+					label(for=password) Password
+				
+					input.form-control.mr-sm-2(id="password" type="password" name="password" placeholder="")
+				br
+				br
+				button.btn.btn-outline-primary(id="login" type="submit") Login

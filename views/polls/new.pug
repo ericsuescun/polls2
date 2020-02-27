@@ -1,0 +1,97 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-4.offset-4
+				form(id='newPoll' action=`/polls/new/${loggedUser._id}` method="POST").form-in-line.mt-2
+					if(!errors)
+						.form-group
+							label(for=title) Title
+							input.form-control.mr-sm-2(id="title" type="text" name="title" placeholder="")
+
+						.form-group
+							label(for=description) Description
+							textarea.form-control.mr-sm-2(id="description" type="text" name="description" placeholder="" rows="5")
+						.options
+							p Options:
+							.form-group
+								input.form-control.mr-sm-2.option(id="opt0" type="text" name="options.0.option" placeholder="")
+
+							.form-group
+								input.form-control.mr-sm-2.option(id="opt1" type="text" name="options.1.option" placeholder="")
+					else
+						each item in errors
+							if(item[2] === false)
+								.form-group
+									label(for=`${item[0]}`)
+										= `${item[0]}`
+
+									if(item[0] === 'description')
+										.form-group
+											textarea.form-control.mr-sm-2.is-valid(id="description" type="text" name="description" placeholder=`${item[1]}` rows="5")
+												=`${item[1]}`
+									else
+										input.form-control.mr-sm-2.is-valid(id=`${item[0]}` type="text" name=`${item[0]}` placeholder=`${item[1]}` value=`${item[1]}`)
+							else
+								.form-group
+									label(for=`${item[0]}`)
+										= `${item[0]}`
+
+									if(item[0] === 'description')
+										.form-group
+											textarea.form-control.mr-sm-2.is-invalid(id="description" type="text" name="description" placeholder="" rows="5")
+									else
+										input.form-control.mr-sm-2.is-invalid(id=`${item[0]}` type="text" name=`${item[0]}` placeholder="")
+									.invalid-feedback
+										= `${item[2]}`
+
+
+					button.btn.btn-primary.mb-3.btn-block(id="addOption" type="button") &plus;
+					.d-flex.justify-content-between
+						a(href='/' class='btn btn-outline-primary') Cancel
+						button.btn.btn-success(id="createPoll" type="submit") Create Poll
+	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+	script.
+		var n = $('input.option').length;
+		$('#addOption').on('click', function() {
+			$('div.options').append('<div class="form-group options.' + n + ' d-flex align-items-center"><input class="form-control mr-sm2-2" id="opt' + n + '" type="text" name="options.' + n + '.option" placeholder=""/></div>');
+			n = n + 1;
+			$('button#delete').remove();
+			if(n > 2) {
+				$('div.options div.form-group').last().append('<button id="delete" class="btn btn-outline-danger my-3 ml-3" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+			}
+		});
+		$('form#newPoll').on('click', 'button#delete', function() {
+			console.log("delete");
+			$('div.options').children('div').last().remove();
+			n = n - 1;
+			$(this).remove();
+			if(n > 2) {
+				$('div.options div.form-group').last().append('<button id="delete" class="btn btn-outline-danger my-3 ml-3" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button>');
+			}
+		});
+		$('form#newPoll').on('submit', function(e) {
+			var eval = false;
+			$('div.invalid-feedback').remove();
+			//- if ($('textarea.form-control').val() === '') {
+			//- 	eval = eval || true;
+			//- 	$('textarea.form-control').addClass('is-invalid');
+			//- 	$('textarea.form-control').parent().append('<div class="invalid-feedback">Cant be blank</div>');
+			//- } else {
+			//- 	$('textarea.form-control').removeClass('is-invalid').addClass('is-valid');
+			//- }
+			//- $('input.form-control').each(function(index) {
+			//- 	console.log("element: " + index + $(this).val());
+			//- 	if($(this).val() === '') {
+			//- 		eval = eval || true;
+			//- 		$(this).addClass('is-invalid');
+			//- 		$(this).parent().append('<div class="invalid-feedback">Cant be blank</div>');
+			//- 	} else {
+			//- 		$(this).removeClass('is-invalid').addClass('is-valid');
+			//- 	}
+			//- });
+			if(eval) {
+				e.preventDefault();
+			}
+		});

@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-6.offset-3
+				a(href='/' class='btn btn-outline-primary') &lt Back
+				.card.my-3
+					.card-body
+						h4.card-title
+							= poll.title
+						h6.card-subtitle.text-muted
+							= `Created by: ${user.email}`
+						h5.card-subtitle.mt-3
+							= poll.description
+				.card
+					.card-body
+						p.card-text Selecciona una opción
+						form(action=`/polls/votes/new/${user._id}?title=${poll.title}` method="POST").form-in-line.mt-2
+							each option, index in poll.options
+								.form-group
+									input(id="opt" + index type="radio" name="choice" value=option.option placeholder="")
+									label.ml-3
+										= option.option
+							
+							.d-flex.justify-content-end
+								button.btn.btn-success.mt-3(type="submit") Vote!

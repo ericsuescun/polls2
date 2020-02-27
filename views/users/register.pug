@@ -1,0 +1,58 @@
+extends ../layout
+
+block content
+	.row
+		.col-4.offset-4
+			form(action="/register" method="POST" id="register").form-in-line.mt-2
+				
+				if(errors)
+					.form-group
+						label(for=email) Email
+						input.form-control.mr-sm-2.is-invalid(id="email" type="text" name="email" placeholder="")
+						.invalid-feedback
+							Email is taken
+				else
+					.form-group
+						label(for=email) Email
+						input.form-control.mr-sm-2(id="email" type="text" name="email" placeholder="")
+				
+				.form-group
+					label(for=password) Password
+				
+					input.form-control.mr-sm-2(id="password" type="password" name="password" placeholder="")
+				br
+				br
+				button.btn.btn-outline-primary.my-2.my-sm-0(id="registerButton" type="submit") Register
+	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+	script.
+		$('form#register').on('submit', function(e) {
+			var eval = false;
+			$('div.invalid-feedback').remove();
+
+			if($('input#email').val() === '') {
+				eval = eval || true;
+				$('input#email').addClass('is-invalid');
+				$('input#email').parent().append('<div class="invalid-feedback">Is required</div>');
+			} else {
+				$('input#email').removeClass('is-invalid').addClass('is-valid');
+			}
+			if($('input#password').val() === '') {
+				eval = eval || true;
+				$('input#password').addClass('is-invalid');
+				$('input#password').parent().append('<div class="invalid-feedback">Is required</div>');				
+			} else {
+				$('input#password').removeClass('is-invalid').addClass('is-valid');
+			}
+			if($('input#password').val().length <= 5) {
+				eval = eval || true;
+				$('input#password').addClass('is-invalid');
+				$('input#password').parent().append('<div class="invalid-feedback">6 or more characters are required</div>');				
+			} else {
+				$('input#password').removeClass('is-invalid').addClass('is-valid');
+			}
+			console.log("Register: " + eval);
+			if(eval) {
+				e.preventDefault();
+				eval = false;
+			}
+		});
